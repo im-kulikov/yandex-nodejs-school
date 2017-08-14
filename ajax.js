@@ -8,7 +8,7 @@ const actions = [
 
 // Рандомное значение для url:
 const randomAction = () => {
-return './' + actions[Math.floor(Math.random()*actions.length)]
+return '/' + actions[Math.floor(Math.random()*actions.length)]
 }
 
 const ajax = (url, callback, data)=> {
@@ -18,7 +18,7 @@ const ajax = (url, callback, data)=> {
         
         if (!req) return;
         
-        const method = (postData) ? "POST" : "GET";
+        const method = "GET";
         
         req.open(method,url,true);
         
