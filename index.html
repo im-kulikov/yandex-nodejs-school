@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Node.js School Test</title>
+    <script src="./index.js"></script>
+    <script src="./ajax.js"></script>
+     <!-- <script src="./test-data.js"></script>  -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <form action="#submitForm" id="myForm" class="form">
+        <div class="form__group">
+            <input class="form__input" type="text" placeholder="ФИО" name="fio" />
+        </div>
+
+        <div class="form__group">
+            <input class="form__input" type="text" placeholder="Email" name="email" />
+        </div>
+
+        <div class="form__group">
+            <input class="form__input" type="text" placeholder="Телефон" name="phone" />
+        </div>
+
+        <div class="form__action">
+            <button class="form__submit" role="button" type="submit" id="submitButton">Отправить</button>
+            <button class="form__button" role="button" type="button" id="setButton">Заполнить</button>
+        </div>
+    </form>
+
+    <div id="resultContainer" class="result-container"></div>
+</body>
+</html>
