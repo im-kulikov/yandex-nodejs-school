@@ -140,34 +140,62 @@ const MyForm = (() => {
         return result
     }
 
+    // Если валидация прошла успешно, кнопка отправки формы должна стать неактивной
+    // и должен отправиться ajax-запрос
+    let isSubmited = false
+
     // Метод submit выполняет валидацию полей и отправку ajax-запроса,
     // если валидация пройдена. Вызывается по клику на кнопку отправить.
     self.submit = () => {
-        let url = randomAction(),
-            data = new FormData(form);
-        ajax(url, response => { 
-            resultDiv.classList.remove('success')
-            resultDiv.classList.remove('error')
-            resultDiv.classList.remove('progress')
-            resultDiv.textContent = ''
+        if (isSubmited) return
 
-            switch (response.status) {
-                case "success":
-                    resultDiv.classList.add('success')
-                    resultDiv.textContent = "Success"
-                    break;
-                case "error":
-                    resultDiv.classList.add('error')
-                    resultDiv.textContent = response.reason
-                    break;
-                case "progress":
-                    resultDiv.classList.add('progress')
-                    setTimeout(() => {
-                        self.submit()
-                    }, response.timeout)
-                    break;
-            }
-        }, data)
+        // На всякий случай, если будет прямое обращение:
+        let result = self.validate()
+        if (!result.isValid) return
+
+        submitButton.disabled = true
+
+        let url = randomAction(),
+            data = new FormData(form)
+        
+        isSubmited = true
+
+        try {
+            ajax(url, response => { 
+                resultDiv.classList.remove('success')
+                resultDiv.classList.remove('error')
+                resultDiv.classList.remove('progress')
+                resultDiv.textContent = ''
+
+                switch (response.status) {
+                    case "success":
+                        isSubmited = false
+                        submitButton.disabled = false
+                        resultDiv.classList.add('success')
+                        resultDiv.textContent = "Success"
+                        break;
+                    case "error":
+                        isSubmited = false
+                        submitButton.disabled = false
+                        resultDiv.classList.add('error')
+                        resultDiv.textContent = response.reason
+                        break;
+                    case "progress":
+                        resultDiv.classList.add('progress')
+                        setTimeout(() => {
+                            isSubmited = false
+                            self.submit()
+                        }, response.timeout)
+                        break;
+                    default:
+                        isSubmited = false
+                        break;
+                }
+            }, data)
+        } catch (e) {
+            isSubmited = false
+            submitButton.disabled = false
+        }
     }
 
     // DocumentReady:
